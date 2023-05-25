@@ -1,22 +1,21 @@
 "use client";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import { useSession } from "next-auth/react";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { toast } from "react-hot-toast";
 import db from "@/firebase";
 
 type Props = {
-	id: string;
+	chatId: string;
 };
 
-const ChatInput = ({ id }: Props) => {
+const ChatInput = ({ chatId }: Props) => {
 	const [prompt, setPrompt] = useState("");
 	const { data: session } = useSession();
-	// useSWR
-	const model = "text-davinci-003";
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
+	const model = "gpt-3.5-turbo";
+
+	const saveMessage = async () => {
 		if (!prompt) {
 			return;
 		}
@@ -24,27 +23,43 @@ const ChatInput = ({ id }: Props) => {
 		setPrompt("");
 		const message: Message = {
 			text: input,
-			createdAt: new Date().toISOString(),
+			createdAt: serverTimestamp(),
 			user: {
 				_id: session?.user?.email!,
 				name: session?.user?.name!,
 				avatar: session?.user?.image! || `https://ui-avatars.com/api/?name=${session?.user?.name!}`,
 			},
 		};
-		await addDoc(collection(db, "users", session?.user?.email!, "chats", id, "messages"), message);
-		const notification = toast.loading("Loading...");
+		await addDoc(collection(db, "users", session?.user?.email!, "chats", chatId, "messages"), message);
+		return input;
+	};
+
+	const sendMessage = async (prompt: string) => {
+		const notification = toast.loading("Thinking...");
 		await fetch("/api/ask", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				prompt: input,
-				chatId: id,
-				model: model,
-				session: session,
-			}),
-		}).then(() => {
-			toast.success("Success!", { id: notification });
-		});
+			body: JSON.stringify({ prompt, chatId, model, session }),
+		})
+			.then(() => {
+				toast.success("Responded!", { id: notification });
+			})
+			.catch((err) => {
+				toast.error(err.message, { id: notification });
+			});
+	};
+
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const savedPrompt = await saveMessage();
+		sendMessage(savedPrompt!);
+	};
+
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+		if (e.key === "Enter" && !e.shiftKey) {
+			e.preventDefault();
+			handleSubmit(e as any);
+		}
 	};
 	return (
 		<>
@@ -57,6 +72,7 @@ const ChatInput = ({ id }: Props) => {
 							placeholder="Send a message."
 							value={prompt}
 							onChange={(e) => setPrompt(e.target.value)}
+							onKeyDown={handleKeyDown}
 						/>
 						<button className="chat-input__button" disabled={!prompt || !session} type="submit">
 							<PaperAirplaneIcon className="chat-input__icon" />

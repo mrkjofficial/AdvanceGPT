@@ -1,23 +1,37 @@
+import admin from "firebase-admin";
+import adminDB from "@/firebaseAdmin";
+import completion from "@/lib/completion";
 import { NextApiRequest, NextApiResponse } from "next";
-import { type } from "os";
+import { gptIcon } from "@/assets";
 
 type Data = {
 	answer: string;
 };
 
-const handler = (req: NextApiRequest, res: NextApiResponse<Data>) => {
-	const { chatID, model, prompt, session } = req.body;
-	if (!chatID) {
+const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+	const { chatId, model, prompt, session } = req.body;
+	if (!chatId) {
+		console.log("Invalid Chat ID!");
 		res.status(400).json({ answer: "Invslid Chat ID!" });
 		return;
 	} else if (!prompt) {
+		console.log("Invalid Prompt!");
 		res.status(400).json({ answer: "Invalid Prompt!" });
 		return;
-	} else {
-		// query
 	}
-
-	res.status(200).json({ answer: "John Doe" });
+	const response = await completion(model, prompt);
+	console.log(response);
+	const message: Message = {
+		text: response || "Sorry, I don't understand that yet!",
+		createdAt: admin.firestore.Timestamp.now(),
+		user: {
+			_id: "AdvanceGPT",
+			name: "AdvanceGPT",
+			avatar: gptIcon,
+		},
+	};
+	await adminDB.collection("users").doc(session?.user?.email).collection("chats").doc(chatId).collection("messages").add(message);
+	res.status(200).json({ answer: message.text });
 };
 
 export default handler;
