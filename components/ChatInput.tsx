@@ -13,7 +13,7 @@ type Props = {
 const ChatInput = ({ chatId }: Props) => {
 	const [prompt, setPrompt] = useState("");
 	const { data: session } = useSession();
-	const model = "gpt-3.5-turbo";
+	const model = process.env.NEXT_PUBLIC_OPENAI_MODEL;
 
 	const saveMessage = async () => {
 		if (!prompt) {
@@ -27,7 +27,7 @@ const ChatInput = ({ chatId }: Props) => {
 			user: {
 				_id: session?.user?.email!,
 				name: session?.user?.name!,
-				avatar: session?.user?.image! || `https://ui-avatars.com/api/?name=${session?.user?.name!}`,
+				avatar: session?.user?.image! || process.env.NEXT_PUBLIC_AVATAR_API + session?.user?.name!,
 			},
 		};
 		await addDoc(collection(db, "users", session?.user?.email!, "chats", chatId, "messages"), message);
