@@ -99,6 +99,10 @@
 		md:h-screen md:pl-64;
 	}
 
+	.home__container {
+		@apply flex flex-col flex-1 items-center justify-center;
+	}
+
 	.home__heading {
 		@apply font-semibold mb-20 text-center text-4xl;
 	}
