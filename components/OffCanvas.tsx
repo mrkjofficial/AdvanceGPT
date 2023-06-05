@@ -10,16 +10,12 @@ type Props = {
 
 const OffCanvas = ({ createNewChat, open, setOpen }: Props) => {
 	return (
-		<div className={`relative duration-500 ease-in-out transition-all ${!open && "hidden"}`} role="dialog">
-			<div className="fixed inset-0 bg-gray-600 bg-opacity-75"></div>
-			<div className="fixed inset-0 flex">
-				<div className="relative flex w-full max-w-xs h-full z-10 flex-1 flex-col bg-gray-900 p-2 text-white">
-					<div className="absolute right-0 top-0 -mr-12 pt-2">
-						<button
-							type="button"
-							className="flex h-10 w-10 items-center justify-center focus:outline-none"
-							onClick={() => setOpen(false)}
-						>
+		<div className={`off-canvas__container ${!open && "hidden"}`} role="dialog">
+			<div className="off-canvas__open-bg"></div>
+			<div className="off-canvas__wrapper">
+				<div className="off-canvas__panel">
+					<div className="off-canvas__close-button-container">
+						<button type="button" className="off-canvas__close-button" onClick={() => setOpen(false)}>
 							<XMarkIcon />
 						</button>
 					</div>
