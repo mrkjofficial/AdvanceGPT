@@ -19,12 +19,8 @@
 		@apply animate-pulse mb-4 text-center;
 	}
 
-	.authentication__button-group {
-		@apply flex flex-row gap-3;
-	}
-
 	.authentication__button {
-		@apply bg-teal-500/90 cursor-pointer px-3 py-2 rounded-md text-white;
+		@apply bg-teal-500/90 cursor-pointer max-w-[100px] px-3 py-2 rounded-md text-white w-full;
 	}
 
 	.app__container {
