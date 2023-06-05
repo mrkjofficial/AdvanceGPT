@@ -17,9 +17,7 @@ const Chat = ({ id }: Props) => {
 	const { data: session } = useSession();
 	const [active, setActive] = useState(false);
 
-	const [messages] = useCollection(
-		collection(db, "users", session?.user?.email!, "chats", id, "messages")
-	);
+	const [messages] = useCollection(collection(db, "users", session?.user?.email!, "chats", id, "messages"));
 
 	useEffect(() => {
 		if (!pathname) {
@@ -34,10 +32,10 @@ const Chat = ({ id }: Props) => {
 	};
 
 	return (
-		<Link className={`chat__container ${active && "bg-gray-700/50 rounded-md"}`} href={`/chat/${id}`}>
+		<Link className={`chat__container ${active && "bg-gray-700/50"}`} href={`/chat/${id}`}>
 			<ChatBubbleLeftIcon className="chat__message-icon" />
 			<p className="chat__title">{messages?.docs[messages?.docs.length - 1]?.data().text || "New Chat"}</p>
-			<TrashIcon className={`chat__delete-icon ${!active && "hidden"}`} onClick={removeChat}/>
+			<TrashIcon className={`chat__delete-icon ${!active && "hidden"}`} onClick={removeChat} />
 		</Link>
 	);
 };

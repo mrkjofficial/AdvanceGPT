@@ -5,8 +5,8 @@ import { signIn } from "next-auth/react";
 
 const Authentication = () => {
 	return (
-		<>
-			<Image className="authentication__logo" src={gptLogo} alt="logo" width={300} height={300} priority/>
+		<div className="authentication__container">
+			<Image className="authentication__logo" src={gptLogo} alt="logo" width={300} height={300} priority />
 			<h4 className="authentication__welcome-message">Welcome to AdvanceGPT</h4>
 			<h4 className="authentication__info-message">Log in / Sign up with your account to continue</h4>
 			<div className="authentication__button-group">
@@ -17,7 +17,7 @@ const Authentication = () => {
 					Sign up
 				</button>
 			</div>
-		</>
+		</div>
 	);
 };
 

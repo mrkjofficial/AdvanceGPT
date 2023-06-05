@@ -1,5 +1,5 @@
-import admin, { firestore } from "firebase-admin";
 import { getApps } from "firebase-admin/app";
+import admin, { firestore } from "firebase-admin";
 
 const serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT_KEY as string);
 

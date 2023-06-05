@@ -1,10 +1,10 @@
 "use client";
 import db from "@/firebase";
 import Message from "./Message";
+import { useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { collection, orderBy, query } from "firebase/firestore";
-import { useEffect, useRef } from "react";
 import { BoltIcon, ExclamationTriangleIcon, SunIcon } from "@heroicons/react/24/outline";
 
 type Props = {
@@ -43,9 +43,18 @@ const NewChat = ({ chatId }: Props) => {
 								<h2>Examples</h2>
 							</div>
 							<div className="home__info-group">
-								<button className="home__info-button">{`"Explain quantum computing in simple terms" →`}</button>
-								<button className="home__info-button">{`"Got any creative ideas for a 10 year old's birthday?" →`}</button>
-								<button className="home__info-button">{`"How do I make an HTTP request in Javascript?" →`}</button>
+								<button
+									className="home__info-button"
+									type="button"
+								>{`"Explain quantum computing in simple terms" →`}</button>
+								<button
+									className="home__info-button"
+									type="button"
+								>{`"Got any creative ideas for a 10 year old's birthday?" →`}</button>
+								<button
+									className="home__info-button"
+									type="button"
+								>{`"How do I make an HTTP request in Javascript?" →`}</button>
 							</div>
 						</div>
 						<div className="home__info-wrapper">

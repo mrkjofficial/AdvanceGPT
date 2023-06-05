@@ -1,5 +1,5 @@
-import { DocumentData } from "firebase/firestore";
 import Image from "next/image";
+import { DocumentData } from "firebase/firestore";
 
 type props = {
 	message: DocumentData;

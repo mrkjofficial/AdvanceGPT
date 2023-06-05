@@ -1,8 +1,8 @@
 import admin from "firebase-admin";
+import { gptIcon } from "@/assets";
 import adminDB from "@/firebaseAdmin";
 import completion from "@/lib/completion";
 import { NextApiRequest, NextApiResponse } from "next";
-import { gptIcon } from "@/assets";
 
 type Data = {
 	answer: string;
@@ -27,7 +27,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 			avatar: gptIcon,
 		},
 	};
-	await adminDB.collection("users").doc(session?.user?.email).collection("chats").doc(chatId).collection("messages").add(message);
+	await adminDB
+		.collection("users")
+		.doc(session?.user?.email)
+		.collection("chats")
+		.doc(chatId)
+		.collection("messages")
+		.add(message);
 	res.status(200).json({ answer: message.text });
 };
 

@@ -1,13 +1,13 @@
 "use client";
-import { FormEvent, useState } from "react";
-import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
-import { useSession } from "next-auth/react";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { toast } from "react-hot-toast";
 import db from "@/firebase";
+import { toast } from "react-hot-toast";
+import { FormEvent, useState } from "react";
+import { useSession } from "next-auth/react";
+import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 type Props = {
-	chatId: string;
+	chatId?: string | undefined;
 };
 
 const ChatInput = ({ chatId }: Props) => {
@@ -30,13 +30,13 @@ const ChatInput = ({ chatId }: Props) => {
 				avatar: session?.user?.image! || process.env.NEXT_PUBLIC_AVATAR_API + session?.user?.name!,
 			},
 		};
-		await addDoc(collection(db, "users", session?.user?.email!, "chats", chatId, "messages"), message);
+		await addDoc(collection(db, "users", session?.user?.email!, "chats", chatId!, "messages"), message);
 		return input;
 	};
 
 	const sendMessage = async (prompt: string) => {
 		const notification = toast.loading("Thinking...");
-		await fetch("/api/ask", {
+		await fetch("/api/query", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ prompt, chatId, model, session }),
@@ -69,6 +69,7 @@ const ChatInput = ({ chatId }: Props) => {
 						<textarea
 							className="chat-input__textarea"
 							disabled={!session}
+							name="prompt"
 							placeholder="Send a message."
 							value={prompt}
 							onChange={(e) => setPrompt(e.target.value)}
