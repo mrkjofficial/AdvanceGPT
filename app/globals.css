@@ -48,9 +48,29 @@
 		@apply h-10 p-2 w-10;
 	}
 
-	.offcanvas__container {
-		@apply bg-gray-900 flex flex-col fixed h-screen inset-y-0 left-0 max-w-xs overflow-x-hidden overflow-y-auto p-4 shadow-md text-white translate-x-0 w-full
-		md:hidden;
+	.off-canvas__container {
+		@apply duration-500 ease-in-out relative transition-all;
+	}
+
+	.off-canvas__open-bg {
+		@apply bg-gray-600 bg-opacity-75 fixed inset-0;
+	}
+
+	.off-canvas__wrapper {
+		@apply fixed flex inset-0;
+	}
+
+	.off-canvas__panel {
+		@apply bg-gray-900 flex flex-1 flex-col h-full max-w-xs p-2 relative text-white w-full;
+	}
+
+	.off-canvas__close-button-container {
+		@apply absolute -mr-12 pt-2 right-0 top-0;
+	}
+
+	.off-canvas__close-button {
+		@apply flex h-10 items-center justify-center w-10
+		focus:outline-none;
 	}
 
 	.app__wrapper {
@@ -123,9 +143,9 @@
 	}
 
 	.main__container {
-		@apply bg-white flex flex-col flex-1 items-center justify-center overflow-hidden text-gray-900
+		@apply bg-white flex flex-col flex-1 h-screen items-center justify-center overflow-hidden text-gray-900
 		dark:bg-gray-800 dark:text-white
-		md:h-screen md:pl-64;
+		md:pl-64;
 	}
 
 	.home__container {
@@ -229,30 +249,5 @@
 
 	.chat-input__disclaimer {
 		@apply px-3 pb-3 pt-2 text-center text-xs text-gray-600 dark:text-gray-300 md:px-4 md:pb-6 md:pt-3;
-	}
-
-	.off-canvas__container {
-		@apply duration-500 ease-in-out relative transition-all;
-	}
-
-	.off-canvas__open-bg {
-		@apply bg-gray-600 bg-opacity-75 fixed inset-0;
-	}
-
-	.off-canvas__wrapper {
-		@apply fixed flex inset-0;
-	}
-
-	.off-canvas__panel {
-		@apply bg-gray-900 flex flex-1 flex-col h-full max-w-xs p-2 relative text-white w-full;
-	}
-
-	.off-canvas__close-button-container {
-		@apply absolute -mr-12 pt-2 right-0 top-0;
-	}
-
-	.off-canvas__close-button {
-		@apply flex h-10 items-center justify-center w-10
-		focus:outline-none;
 	}
 }
