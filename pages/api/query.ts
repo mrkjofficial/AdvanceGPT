@@ -11,7 +11,7 @@ type Data = {
 const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 	const { chatId, model, prompt, session } = req.body;
 	if (!chatId) {
-		res.status(400).json({ answer: "Invslid Chat ID!" });
+		res.status(400).json({ answer: "Invalid Chat ID!" });
 		return;
 	} else if (!prompt) {
 		res.status(400).json({ answer: "Invalid Prompt!" });
